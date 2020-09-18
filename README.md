@@ -1,9 +1,6 @@
 # PS
 ## [BOJ](https://www.acmicpc.net/)
  > [sestrik](https://www.acmicpc.net/user/sestrik)
-
-## [Algospot](https://algospot.com/)
- > sestrik
 ___
 
 ## 사담
