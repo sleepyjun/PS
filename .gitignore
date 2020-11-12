@@ -34,7 +34,7 @@ a
 
 # Backup
 *.swp
-
+*.code-workspace
 #Directory
 Memo/
 .vscode/

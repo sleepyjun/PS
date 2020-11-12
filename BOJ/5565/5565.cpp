@@ -1,4 +1,4 @@
-// 
+// https://www.acmicpc.net/problem/5565
 #include <iostream>
 #include <algorithm>
 #include <limits>
@@ -15,5 +15,11 @@ int main()
 	std::ios_base::sync_with_stdio(false);
 	cin.tie(NULL); cout.tie(NULL);
 	
-	
-}//g++ -o a -std=c++11 *.cpp
+	int total; cin >> total;
+    for(int i = 0; i < 9; ++i)
+	{
+		int x; cin >> x;
+		total -= x;
+	}
+	cout << total << '\n';
+}//find . -type f -name "*.cpp" -exec g++ {} -o a -std=c++11 \;
