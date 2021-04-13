@@ -1,4 +1,4 @@
-// https://www.acmicpc.net/problem/10989
+// https://www.acmicpc.net/problem/4375
 #include <iostream>
 #include <algorithm>
 #include <limits>
@@ -10,20 +10,25 @@ using ull = unsigned long long;
 using pii = std::pair<int, int>;
 const int INF = std::numeric_limits<int>::max();
 
-int arr[10001];
-
 int main()
 {
 	std::ios_base::sync_with_stdio(false);
 	cin.tie(NULL); cout.tie(NULL);
 	
-	int n; cin >> n;
-	for(int i = 0; i < n; ++i)
+	while(1)
 	{
-		int x; cin >> x;
-		arr[x]++;
+		int n; cin >> n;
+		if(cin.eof()) return 0;
+		int tenMod = 1;
+		int mod = 1;
+		int cnt = 1;
+		while(1)
+		{
+			if(mod % n == 0) break;
+			tenMod = (tenMod*10)%n;
+			mod = (mod + tenMod)%n;
+			cnt++;
+		}
+		cout << cnt << std::endl;
 	}
-	for(int i = 1; i <= 10000; ++i)
-		for(int j = 0; j < arr[i]; ++j)
-			cout << i << '\n';
 }//g++ -o a -std=c++11 *.cpp

@@ -1,4 +1,4 @@
-// https://www.acmicpc.net/problem/10989
+// 
 #include <iostream>
 #include <algorithm>
 #include <limits>
@@ -10,20 +10,28 @@ using ull = unsigned long long;
 using pii = std::pair<int, int>;
 const int INF = std::numeric_limits<int>::max();
 
-int arr[10001];
-
+int arr[100000];
 int main()
 {
 	std::ios_base::sync_with_stdio(false);
 	cin.tie(NULL); cout.tie(NULL);
 	
+	// std::fill(arr,arr+100000,INF);
 	int n; cin >> n;
 	for(int i = 0; i < n; ++i)
+		cin >> arr[i];
+	int sum; cin >> sum;
+	std::sort(arr, arr+n);
+
+	int cnt = 0;
+	int l=0,r=n-1;
+	while(l<r)
 	{
-		int x; cin >> x;
-		arr[x]++;
+		if(l==r) break;
+		int tSum = arr[l]+arr[r];
+		if(sum == tSum) {cnt++; l++;}
+		else if(sum < tSum)r--;
+		else if(sum > tSum)l++;
 	}
-	for(int i = 1; i <= 10000; ++i)
-		for(int j = 0; j < arr[i]; ++j)
-			cout << i << '\n';
+	cout << cnt << '\n';
 }//g++ -o a -std=c++11 *.cpp

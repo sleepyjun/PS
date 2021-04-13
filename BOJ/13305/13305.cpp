@@ -1,4 +1,4 @@
-// https://www.acmicpc.net/problem/10989
+// https://www.acmicpc.net/problem/13305
 #include <iostream>
 #include <algorithm>
 #include <limits>
@@ -10,20 +10,23 @@ using ull = unsigned long long;
 using pii = std::pair<int, int>;
 const int INF = std::numeric_limits<int>::max();
 
-int arr[10001];
-
 int main()
 {
 	std::ios_base::sync_with_stdio(false);
 	cin.tie(NULL); cout.tie(NULL);
 	
 	int n; cin >> n;
+	std::vector<int> road(n-1);
+	for(int i = 0; i < n-1; ++i)
+		cin >> road[i];
+	ull res = 0;
+	ull min = INF;
 	for(int i = 0; i < n; ++i)
 	{
-		int x; cin >> x;
-		arr[x]++;
+		ull x; cin >> x;
+		if(i==n-1) break;
+		min = std::min(min, x);
+		res += min*road[i];
 	}
-	for(int i = 1; i <= 10000; ++i)
-		for(int j = 0; j < arr[i]; ++j)
-			cout << i << '\n';
+	cout << res << '\n';
 }//g++ -o a -std=c++11 *.cpp

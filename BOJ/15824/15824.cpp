@@ -1,4 +1,4 @@
-// https://www.acmicpc.net/problem/10989
+// 
 #include <iostream>
 #include <algorithm>
 #include <limits>
@@ -10,20 +10,31 @@ using ull = unsigned long long;
 using pii = std::pair<int, int>;
 const int INF = std::numeric_limits<int>::max();
 
-int arr[10001];
-
+const long long MOD = 1e9+7;
+long long pow2(int n)
+{
+	long long res = 1;
+	long long exp = 2;
+	while(n)
+	{
+		if(n&1) res = (res*exp)%MOD;
+		n>>=1;
+		exp = (exp*exp)%MOD;
+	}
+	return res%MOD;
+}
 int main()
 {
 	std::ios_base::sync_with_stdio(false);
 	cin.tie(NULL); cout.tie(NULL);
 	
 	int n; cin >> n;
+	std::vector<long long> arr(n);
+	for(int i = 0; i < n; ++i) cin >> arr[i];
+	std::sort(arr.begin(), arr.end());
+	long long res = 0;
 	for(int i = 0; i < n; ++i)
-	{
-		int x; cin >> x;
-		arr[x]++;
-	}
-	for(int i = 1; i <= 10000; ++i)
-		for(int j = 0; j < arr[i]; ++j)
-			cout << i << '\n';
+		res = (res + (pow2(i) - pow2(n-i-1))*arr[i])%MOD;
+
+	cout << res << '\n';
 }//g++ -o a -std=c++11 *.cpp

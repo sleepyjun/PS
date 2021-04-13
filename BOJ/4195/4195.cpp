@@ -4,8 +4,6 @@
 #include <limits>
 #include <vector>
 #include <string>
-#include <unordered_map>
-#include <cmath>
 #include <map>
 
 using std::cin; using std::cout;
@@ -13,22 +11,27 @@ using ull = unsigned long long;
 using pii = std::pair<int, int>;
 const int INF = std::numeric_limits<int>::max();
 
-int arr[100001];
-
-int find(int n)
+int p[200001];
+int parent(int a)
 {
-	if(arr[n] < 0) return n;
-	return arr[n] = find(arr[n]);
+	if(p[a] < 0) return a;
+	return p[a] = parent(p[a]);
 }
-void merge(int p, int c)
+void merge(int a, int b)
 {
-	p = find(p);
-	c = find(c);
-	if(p == c) return;
-	arr[p] += arr[c];
-	arr[c] = p;
-}
+	a = parent(a);
+	b = parent(b);
 
+	if(a == b)
+	{
+		cout << abs(p[a]) << '\n';
+		return;
+	}
+	p[a] += p[b];
+	p[b] = a;
+	cout << abs(p[a]) << '\n';
+	return;
+}
 int main()
 {
 	std::ios_base::sync_with_stdio(false);
@@ -37,20 +40,17 @@ int main()
 	int t; cin >> t;
 	while(t--)
 	{
-		std::fill(arr,arr+100001,-1);
-		std::map<std::string, int> m;
+		int idx = 1;
 		int f; cin >> f;
-		int cnt = 1;
+		std::map<std::string, int> m;
+		std::fill(p, p+200001,-1);
 		for(int i = 0; i < f; ++i)
 		{
-			std::string a,b; cin >> a >> b;
-			
-			if(m[a] == 0)
-				m[a] = cnt++;
-			if(m[b] == 0)
-				m[b] = cnt++;
-			merge(m[a],m[b]);
-			cout << abs(arr[find(m[a])]) << '\n';
+			std::string a,b;
+			cin >> a >> b;
+			if(m[a] == 0) m[a] = idx++;
+			if(m[b] == 0) m[b] = idx++;
+			merge(m[a], m[b]);
 		}
 	}
-}//find . -type f -name "*.cpp" -exec g++ {} -o a -std=c++11 \;
+}//g++ -o a -std=c++11 *.cpp
