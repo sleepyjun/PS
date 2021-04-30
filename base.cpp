@@ -16,4 +16,4 @@ int main()
 	cin.tie(NULL); cout.tie(NULL);
 	
 	
-}//g++ -o a -std=c++11 *.cpp
+}//g++ -o a -std=c++17 *.cpp
