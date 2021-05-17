@@ -1,3 +1,4 @@
+// https://www.acmicpc.net/problem/5719
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -46,24 +47,15 @@ void solve(int s)
 
 void deletePath(int s, int d)
 {
-	std::queue<int> q;
-	q.push(d);
-	
-	while(!q.empty())
+	if(s==d) return;
+
+	for(pii prev : adjR[d])
 	{
-		int cur = q.front();
-		q.pop();
-		
-		if(cur == s) continue;
-		
-		for(pii prev : adjR[cur])
+		int pre = prev.first;
+		if(visited[pre][d] == false && dist[pre] + prev.second == dist[d])
 		{
-			int pre = prev.first;
-			if(dist[pre] + prev.second == dist[cur])
-			{
-				visited[pre][cur] = true;
-				q.push(pre);
-			}
+			visited[pre][d] = true;
+			deletePath(s, pre);
 		}
 	}
 }
@@ -101,4 +93,4 @@ int main()
 			adjR[i].clear();
 		}
 	}
-}
+}//g++ -o a -std=c++17 *.cpp

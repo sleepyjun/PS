@@ -1,73 +1,75 @@
+// https://www.acmicpc.net/problem/2042
 #include <iostream>
 #include <algorithm>
+#include <limits>
 #include <vector>
-#include <queue>
-#include <cmath>
+#include <string>
+
 using std::cin; using std::cout;
+using ull = unsigned long long;
+using pii = std::pair<int, int>;
+const int INF = std::numeric_limits<int>::max();
 
-typedef std::pair<int, int> pii;
-typedef long long ll;
-const int INF = 987654321;
+const int MAX = 2097152;
+long long arr[MAX];
 
-std::vector<ll> arr, tree;
-ll init(int start, int end, int node)
-{
-    if(start == end)
-        return tree[node] = arr[start];
-    int mid = (start+end)/2;
-    return tree[node] = init(start,mid,node*2) +
-                    init(mid+1,end,node*2+1);
-}
-void update(int start, int end, int node, int idx, ll diff)
-{
-    if(!(start <= idx && idx <= end)) return;
-    tree[node] += diff;
-    if(start != end)
+struct SegTree {
+    int leaf, cnt;
+    SegTree(): leaf(0), cnt(0) {}
+    SegTree(int n): cnt(n)
     {
-        int mid = (start+end)/2;
-        update(start,mid,node*2,idx,diff);
-        update(mid+1,end,node*2+1,idx,diff);
+        leaf = 1;
+        while(leaf < n) leaf *= 2;
     }
-    else
+
+    void init()
     {
-        
+        for(int i = leaf-1; i > 0; --i)
+			arr[i] = arr[i*2]+arr[i*2+1];
     }
-}
-ll sum(int start, int end, int left, int right, int node)
-{
-    if(left > end || right < start)  return 0;
-    if(left <= start && end <= right) return tree[node];
-    
-    int mid = (start+end)/2;
-    return sum(start,mid,left,right,node*2) +
-        sum(mid+1,end,left,right,node*2+1);
-}
+    void update(int i, long long v)
+    {
+        i += leaf;
+        arr[i] = v;
+        for(i/=2; i>=1; i/=2)
+			arr[i] = arr[i*2]+arr[i*2+1];
+    }
+    long long query(int l, int r) //[l,r)
+    {
+        long long res = 0;
+        l += leaf;
+        r += leaf;
+        while(l < r)
+        {
+            if(l % 2 == 1) res += arr[l++];
+            if(r % 2 == 1) res += arr[--r];
+            l/=2, r/=2;
+        }
+        return res;
+    }   
+};
 int main()
 {
-    std::ios_base::sync_with_stdio(false);
-    cin.tie(0); cout.tie(0);
-    
-    int n,m,k; cin >> n >> m >> k;
+	std::ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	int n, m, k; cin >> n >> m >> k;
     int t = m+k;
-    arr.resize(n+1); tree.resize(n*4);
-    for(int i = 1; i <= n; ++i) cin >> arr[i];
-    init(1,n,1);
+    SegTree s(n);
+    for(int i = 0; i < n; ++i)
+        cin >> arr[s.leaf+i];
+    s.init();
     while(t--)
     {
-        int a; cin >> a;
+        long long a, b, c; cin >> a >> b >> c;
+    
         if(a == 1)
         {
-            int b;
-            ll c;
-            cin >> b >> c;
-            update(1,n,1,b,c-arr[b]);
-            arr[b] = c;
+            s.update(b-1,c);
         }
         else if(a == 2)
         {
-            int b,c;
-            cin >> b >> c;
-            cout << sum(1,n,b,c,1) << '\n';
+            cout << s.query(b-1, c) << '\n';
         }
     }
-}
+}//g++ -o a -std=c++17 *.cpp
