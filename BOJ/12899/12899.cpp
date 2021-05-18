@@ -1,17 +1,16 @@
-// https://www.acmicpc.net/problem/9426
+// https://www.acmicpc.net/problem/12899
 #include <iostream>
 #include <algorithm>
 #include <limits>
 #include <vector>
 #include <string>
-#include <queue>
 
 using std::cin; using std::cout;
 using ull = unsigned long long;
 using pii = std::pair<int, int>;
 const int INF = std::numeric_limits<int>::max();
 
-const int MAX = 131072;
+const int MAX = 4194304;
 int arr[MAX];
 
 struct SegTree {
@@ -44,25 +43,20 @@ int main()
 	std::ios_base::sync_with_stdio(false);
 	cin.tie(NULL); cout.tie(NULL);
 	
-	int n,k; cin >> n >> k;
-	std::queue<int> q;
-	SegTree s(65535);
-	long long sum = 0;
+	int n; cin >> n;
+	SegTree s(2000000);
 	for(int i = 0; i < n; ++i)
 	{
-		int x; cin >> x;
-		q.push(x);
-		s.update(x, 1);
-		if(q.size() == k+1)
+		int t,x; cin >> t >> x;
+		if(t == 1)
 		{
-			s.update(q.front(), -1);
-			q.pop();
+			s.update(x, 1);
 		}
-		if(q.size() == k)
+		else if(t == 2)
 		{
-			sum += s.query((k+1)/2-1);
+			int y = s.query(x-1);
+			s.update(y, -1);
+			cout << y << '\n';
 		}
 	}
-
-	cout << sum << '\n';
 }//g++ -o a -std=c++17 *.cpp
