@@ -64,7 +64,7 @@ int main()
 		for(int j = 1; j <= n; ++j)
 		{
 			pathResult.clear();
-			if(i == j) cout << 0;
+			if(i == j || dist[i][j] == INF) cout << 0;
 			else
 			{
 				pathResult.push_back(i);
