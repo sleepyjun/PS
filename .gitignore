@@ -36,14 +36,9 @@ a
 *.swp
 *.code-workspace
 #Directory
-Memo/
 .vscode/
-CodeForce/
-dataStructure/
-mordernCpp/
+etc/
 Unsolved/
-Now/
-Algorithm/
 #My MEMO
 info.md
 test.cpp
