@@ -1,3 +1,4 @@
+// https://www.acmicpc.net/problem/10926 
 #include <algorithm>
 #include <iostream>
 #include <limits>
@@ -13,6 +14,8 @@ int main() {
   std::ios_base::sync_with_stdio(false);
   cin.tie(NULL); cout.tie(NULL);
 
-  
+  std::string str; cin >> str;
+  str += "??!";
+  cout << str << '\n';
 }
 // g++ -o a -std=c++17 *.cpp
