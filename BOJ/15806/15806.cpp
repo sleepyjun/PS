@@ -1,78 +1,70 @@
-#include<cstdio>
-#include<queue>
-#include<algorithm>
-#include<cstring>
-using namespace std;
+// https://www.acmicpc.net/problem/15806 
+#include <algorithm>
+#include <iostream>
+#include <limits>
+#include <string>
+#include <vector>
+#include <queue>
+using std::cin; using std::cout;
+using ull = unsigned long long;
+using pii = std::pair<int, int>;
+const int INF = std::numeric_limits<int>::max();
 
-int N, M, K, t;
-int **Map;
-int **ca;
+const int DIR[8][2] = {
+  {-2, 1},
+  {-1, 2},
+  {1, 2},
+  {2, 1},
+  {2, -1},
+  {1, -2},
+  {-1, -2},
+  {-2, -1},
+};
+bool visited[301][301][2];
 
-queue<int> qx;
-queue<int> qy;
-const int Xpos[] = {1,2,2,1,-1,-2,-2,-1};
-const int Ypos[] = {-2,-1,1,2,2,1,-1,-2};
-void bfs()
-{
-    for(int time = 0; time < t; ++time)
-    {
-        int qSize = qx.size();
-        for(int i = 0; i < qSize; ++i)
-        {
-            int x = qx.front();
-            int y = qy.front();
-            qx.pop(); qy.pop();
-            Map[x][y]--;
-            for(int j = 0; j < 8; ++j)
-            {
-                int dx = x + Xpos[j];
-                int dy = y + Ypos[j];
-                if(dx>=1 && dx<=N && dy>=1 && dy<=N)
-                {
-                    Map[dx][dy]++;
-                    qx.push(dx);
-                    qy.push(dy);
-                }
-            }
-        }
+int main() {
+  std::ios_base::sync_with_stdio(false);
+  cin.tie(NULL); cout.tie(NULL);
+
+  std::queue<pii> q;
+  int n, m, k, t; cin >> n >> m >> k >> t;
+  for (int i = 0; i < m; ++i) {
+    int x, y; cin >> x >> y;
+    q.push({x, y});
+    visited[x][y][0] = true;
+  }
+
+  for (int i = 0; i < t; ++i) {
+    int qSize = q.size();
+    for (int j = 0; j < qSize; ++j) {
+      int cx = q.front().first;
+      int cy = q.front().second;
+      q.pop();
+
+      if (i < 3) {
+        visited[cx][cy][i%2] = false;
+      }
+
+      for (int d = 0; d < 8; ++d) {
+        int nx = cx + DIR[d][0];
+        int ny = cy + DIR[d][1];
+
+        if (nx < 1 || ny < 1 || nx > n || ny > n) continue;
+        if (visited[cx][cy][(i+1)%2]) continue;
+        visited[cx][cy][(i+1)%2] = true;
+        q.push({cx, cy});
+      }
     }
+  }
+
+  for (int i = 0; i < k; ++i) {
+    int x, y; cin >> x >> y;
+    if (visited[x][y][t%2]) {
+      cout << "YES\n";
+      return 0;
+    }
+  }
+  cout << "NO\n";
+  return 0;
 }
-
-int main()
-{
-    scanf("%d %d %d %d",&N, &M, &K, &t);
-    Map = new int*[N+1];
-    ca = new int*[K+1];
-
-    for(int i = 0; i <= N; ++i)
-        Map[i] = new int[N+1];
-
-    for(int i = 0; i < M; ++i)
-    {
-        int x,y;
-        scanf("%d %d",&x, &y);
-        qx.push(x); qy.push(y);
-        Map[x][y] = 1;
-    }
-    for(int i = 0; i < K; ++i)
-    {
-        ca[i] = new int[2];
-
-        int x,y;
-        scanf("%d %d",&x, &y);
-        ca[i][0] = x;
-        ca[i][1] = y;
-    }
-
-    bfs();
-    for(int i = 0; i < K; ++i)
-    {
-        if(Map[ca[i][0]][ca[i][1]] > 0)//exist
-        {
-            printf("YES");
-            return 0;
-        }
-    }
-    printf("NO");
-    return 0;
-}
+// g++ -o a -std=c++17 *.cpp
